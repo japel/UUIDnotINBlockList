@@ -24,9 +24,9 @@ module.exports.bootstrap = function (cb) {
     {UUID: uuid.v4()},
     {UUID: uuid.v4()},
     {UUID: uuid.v4()},
-    {UUID: uuid.v4()},
     {UUID: uuid.v4()}])
     .exec(function (error, created) {
+      console.log(created);
       console.log(created.length);
       var myUUID = created[0].UUID;
 
@@ -36,8 +36,9 @@ module.exports.bootstrap = function (cb) {
       blockList.push(created[2].UUID);
       blockList.push(created[3].UUID);
 
-      Test.find({UUID: {"!": myUUID}, UUID: {"!": blockList}})
+      Test.find({and:[{UUID:{"!":blockList}},{UUID:{"!":myUUID}}]})
         .exec(function (error, found) {
+          console.log(found);
           console.log(found.length);
         });
 
